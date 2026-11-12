@@ -1,3 +1,4 @@
+
 name: Build Arsenal Mod
 
 on:
@@ -23,13 +24,15 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.5'
 
       - name: Extract ZIP
         run: unzip -q arsenal-fabric-1.20.1.zip -d project
 
       - name: Build Mod
         run: |
-          BUILD_FILE=$(find project -type f -name build.gradle -o -name build.gradle.kts | head -n 1)
+          BUILD_FILE=$(find project -type f \( -name build.gradle -o -name build.gradle.kts \) | head -n 1)
           if [ -z "$BUILD_FILE" ]; then
             echo "ERROR: build.gradle not found"
             exit 1
@@ -44,4 +47,3 @@ jobs:
           name: Arsenal-Mod
           path: project/**/build/libs/*.jar
           if-no-files-found: error
-
